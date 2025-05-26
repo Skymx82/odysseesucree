@@ -6,16 +6,17 @@ const poppins = Poppins({ subsets: ['latin'], weight: ['300', '400', '500', '600
 
 export default function Hero() {
   return (
-    <section className="relative h-screen overflow-hidden">
-      {/* Arrière-plan clair avec dégradés subtils */}
+    <div className="relative pb-8">
+      {/* Conteneur avec arrière-plan qui s'étend au-delà de la section */}
       <div className="absolute inset-0 z-0 bg-gradient-to-br from-white via-[#FFF8FD] to-[#F9F5FF]">
         <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#D90BB5] opacity-5 blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-[#A90BD9] opacity-5 blur-3xl"></div>
         <div className="absolute top-1/3 left-1/4 w-32 h-32 rounded-full bg-[#D90BB5] opacity-10 blur-2xl"></div>
       </div>
       
-      {/* Contenu */}
-      <div className="relative z-10 flex flex-col justify-center h-full px-6 md:px-12 max-w-7xl mx-auto">
+      <section className="relative h-screen overflow-hidden">
+        {/* Contenu */}
+        <div className="relative z-10 flex flex-col justify-center h-full px-6 md:px-12 max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="relative">
             {/* Éléments décoratifs */}
@@ -118,13 +119,18 @@ export default function Hero() {
         </div>
         
         {/* Scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2">
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 animate-pulse">
           <div className="flex flex-col items-center">
-            <p className={`${poppins.className} text-xs text-[#A90BD9] mb-2 tracking-widest`}>SCROLL</p>
-            <div className="w-px h-8 bg-gradient-to-b from-[#D90BB5]/30 to-[#D90BB5]"></div>
+            <p className={`${poppins.className} text-xs text-[#A90BD9] mb-2 tracking-widest font-medium`}>DÉCOUVRIR</p>
+            <div className="flex flex-col items-center">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[#D90BB5] mb-1">
+                <path d="M12 5V19M12 19L19 12M12 19L5 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
           </div>
         </div>
       </div>
     </section>
+    </div>
   );
 }
