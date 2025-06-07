@@ -7,39 +7,39 @@ import { Caveat, Poppins } from 'next/font/google';
 const caveat = Caveat({ subsets: ['latin'] });
 const poppins = Poppins({ subsets: ['latin'], weight: ['300', '400', '500', '600'] });
 
-// Données des créations phares
+// Données des créations phares basées sur les vrais gâteaux d'Odyssée Sucrée
 const featuredItems = [
   {
     id: 1,
-    name: "Éclair Passion-Framboise",
-    description: "Un éclair garni d'une crème légère à la passion et d'un confit de framboises fraîches.",
-    price: "6,50 €",
-    image: "/creations/eclair.png",
-    tags: ["Signature", "Fruité"]
+    name: "Saint-Honoré",
+    description: "Pâte feuilletée garnie de choux caramélisés et d'une délicate crème chiboust à la vanille de Madagascar.",
+    price: "6,90 €",
+    image: "/creations/saint-honore.png",
+    tags: ["Classique", "Gourmand"]
   },
   {
     id: 2,
-    name: "Tarte Chocolat-Caramel",
-    description: "Ganache au chocolat noir intense sur un lit de caramel au beurre salé et noisettes torréfiées.",
-    price: "5,90 €",
-    image: "/creations/tarte-chocolat.png",
-    tags: ["Bestseller", "Chocolat"]
+    name: "Fraisier",
+    description: "Génoise moelleuse garnie de fraises fraîches de saison et d'une crème mousseline à la vanille.",
+    price: "6,50 €",
+    image: "/creations/fraisier.png",
+    tags: ["Bestseller", "Fruité"]
   },
   {
     id: 3,
-    name: "Macaron Pistache-Cerise",
-    description: "Coques craquantes à la pistache fourrées d'une ganache montée à la cerise griotte.",
-    price: "2,20 €",
-    image: "/creations/macaron.png",
-    tags: ["Nouveau", "Délicat"]
-  },
-  {
-    id: 4,
-    name: "Paris-Brest Praliné",
+    name: "Paris-Brest",
     description: "Pâte à choux croustillante garnie d'une crème mousseline au praliné noisette maison.",
     price: "7,20 €",
     image: "/creations/paris-brest.png",
-    tags: ["Classique", "Gourmand"]
+    tags: ["Signature", "Gourmand"]
+  },
+  {
+    id: 4,
+    name: "Pavlova Fruitée",
+    description: "Meringue croustillante à l'extérieur et fondante à l'intérieur, garnie de crème fouettée et fruits frais de saison.",
+    price: "6,90 €",
+    image: "/creations/pavlova.png",
+    tags: ["Léger", "Fruité"]
   }
 ];
 
@@ -52,11 +52,11 @@ export default function FeaturedCreations() {
         {/* En-tête de section */}
         <div className="text-center mb-12">
           <h2 className={`${caveat.className} text-3xl md:text-4xl text-[#A90BD9] mb-3`}>
-            Nos Créations Phares
+            Nos Gâteaux Phares
           </h2>
           <div className="w-20 h-1 bg-[#D90BB5] mx-auto mb-4"></div>
           <p className={`${poppins.className} text-gray-600 max-w-2xl mx-auto`}>
-            Découvrez nos pâtisseries signatures, élaborées avec passion et des ingrédients locaux de saison.
+            Découvrez nos gâteaux signatures, élaborés avec passion et des ingrédients frais de saison. Choix personnalisable sur demande.
           </p>
         </div>
 
@@ -116,7 +116,7 @@ export default function FeaturedCreations() {
             href="#" 
             className={`${poppins.className} inline-block bg-white border border-[#A90BD9] text-[#A90BD9] hover:bg-[#A90BD9] hover:text-white py-2 px-6 rounded-full transition-colors text-sm tracking-wide`}
           >
-            VOIR TOUTES NOS CRÉATIONS
+            VOIR TOUS NOS GÂTEAUX
           </a>
         </div>
       </div>
