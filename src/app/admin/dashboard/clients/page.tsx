@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Client, NouveauClient } from '@/types/database';
-import DashboardLayout from '@/components/admin/DashboardLayout';
+import DashboardLayout from '@/components/admin/layout/DashboardLayout';
 import ClientModal from '@/components/admin/clients/ClientModal';
 import ClientDetails from '@/components/admin/clients/ClientDetails';
 

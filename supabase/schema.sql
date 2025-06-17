@@ -116,3 +116,57 @@ CREATE TABLE produits_commandes (
     personnalisation TEXT,
     allergenes TEXT
 );
+
+-- Table pour la gestion des stocks dans les frigos
+CREATE TABLE stock (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    nom VARCHAR(255) NOT NULL,
+    quantite INTEGER NOT NULL DEFAULT 0,
+    unite VARCHAR(50) NOT NULL DEFAULT 'pièce',
+    frigo VARCHAR(50) NOT NULL,
+    prix_par_part DECIMAL(10, 2),
+    date_peremption DATE,
+    date_ajout TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    date_modification TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    notes TEXT,
+    alerte_stock_bas INTEGER
+);
+
+-- Table pour la gestion des marchés
+CREATE TABLE marches (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    nom VARCHAR(255) NOT NULL,
+    lieu VARCHAR(255) NOT NULL,
+    date_debut TIMESTAMP WITH TIME ZONE NOT NULL,
+    date_fin TIMESTAMP WITH TIME ZONE NOT NULL,
+    statut VARCHAR(50) NOT NULL DEFAULT 'à venir', -- à venir, en cours, terminé, annulé
+    notes TEXT,
+    produits_vendus TEXT, -- Liste des produits vendus au format JSON
+    chiffre_affaire DECIMAL(10, 2),
+    date_creation TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    date_modification TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+);
+
+-- Table pour les ventes sur les marchés
+CREATE TABLE vente_marche (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id_marche UUID NOT NULL REFERENCES marches(id) ON DELETE CASCADE,
+    date_vente TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    montant_total DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    notes TEXT,
+    date_creation TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    date_modification TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+);
+
+-- Table pour les variantes de produits vendus sur les marchés
+CREATE TABLE variante_marche (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id_vente_marche UUID NOT NULL REFERENCES vente_marche(id) ON DELETE CASCADE,
+    id_stock UUID REFERENCES stock(id) ON DELETE SET NULL,
+    nom_produit VARCHAR(255) NOT NULL,
+    quantite INTEGER NOT NULL DEFAULT 1,
+    prix_unitaire DECIMAL(10, 2) NOT NULL,
+    montant_total DECIMAL(10, 2) NOT NULL,
+    date_creation TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    date_modification TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+);

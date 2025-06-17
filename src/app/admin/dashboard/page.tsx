@@ -1,6 +1,6 @@
 "use client";
 
-import DashboardLayout from "@/components/admin/DashboardLayout";
+import DashboardLayout from "@/components/admin/layout/DashboardLayout";
 import { Poppins } from 'next/font/google';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['300', '400', '500', '600'] });
@@ -8,7 +8,7 @@ const poppins = Poppins({ subsets: ['latin'], weight: ['300', '400', '500', '600
 export default function Dashboard() {
   return (
     <DashboardLayout>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6 text-black">
         {/* Statistiques rapides */}
         <div className="bg-white p-6 rounded-lg shadow-sm">
           <div className="flex items-center justify-between">

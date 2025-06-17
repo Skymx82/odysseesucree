@@ -39,7 +39,7 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-[#FFF8FD] to-[#F9F5FF] px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-[#FFF8FD] to-[#F9F5FF] px-4 text-black">
       <div className="w-full max-w-md">
         {/* Logo et titre */}
         <div className="text-center mb-8">

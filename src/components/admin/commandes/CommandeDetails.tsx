@@ -101,52 +101,52 @@ export default function CommandeDetails({ commandeId, onClose, onEdit }: Command
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 max-w-4xl mx-auto text-black">
-      <div className="flex justify-between items-center mb-6">
+    <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 max-w-4xl mx-auto text-black overflow-y-auto max-h-[90vh]">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
         <h2 className="text-xl font-bold">Détails de la commande</h2>
-        <div className="flex space-x-2">
+        <div className="flex w-full sm:w-auto justify-end gap-2">
           <button
             onClick={() => onEdit(commande)}
-            className="px-4 py-2 bg-[#A90BD9] text-white rounded-md hover:bg-[#8A09B1] flex items-center gap-2"
+            className="px-3 py-2 sm:px-4 sm:py-2 bg-[#A90BD9] text-white rounded-md hover:bg-[#8A09B1] flex items-center gap-1 text-sm sm:text-base"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 sm:w-5 sm:h-5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
             </svg>
             Modifier
           </button>
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"
+            className="px-3 py-2 sm:px-4 sm:py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 text-sm sm:text-base"
           >
             Fermer
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         {/* Informations générales */}
-        <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="font-semibold text-lg mb-3">Informations générales</h3>
+        <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+          <h3 className="font-semibold text-base sm:text-lg mb-2 sm:mb-3">Informations générales</h3>
           <div className="space-y-2">
-            <div className="flex justify-between">
-              <span className="text-gray-600">ID:</span>
-              <span className="font-medium">{commande.id}</span>
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+              <span className="text-gray-600 text-sm font-medium">ID:</span>
+              <span className="font-medium text-sm break-all">{commande.id}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Date de commande:</span>
-              <span className="font-medium">{formatDate(commande.date_commande)}</span>
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+              <span className="text-gray-600 text-sm font-medium">Date de commande:</span>
+              <span className="font-medium text-sm">{formatDate(commande.date_commande)}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Date de livraison:</span>
-              <span className="font-medium">{formatDate(commande.date_livraison)}</span>
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+              <span className="text-gray-600 text-sm font-medium">Date de livraison:</span>
+              <span className="font-medium text-sm">{formatDate(commande.date_livraison)}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Type de commande:</span>
-              <span className="font-medium">{commande.type_commande}</span>
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+              <span className="text-gray-600 text-sm font-medium">Type de commande:</span>
+              <span className="font-medium text-sm">{commande.type_commande}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Statut:</span>
-              <span className={`font-medium px-2 py-1 rounded-full text-xs
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+              <span className="text-gray-600 text-sm font-medium">Statut:</span>
+              <span className={`font-medium px-2 py-1 rounded-full text-xs inline-block w-fit
                 ${commande.statut === 'en attente' ? 'bg-yellow-100 text-yellow-800' : ''}
                 ${commande.statut === 'confirmée' ? 'bg-blue-100 text-blue-800' : ''}
                 ${commande.statut === 'en préparation' ? 'bg-indigo-100 text-indigo-800' : ''}
@@ -161,37 +161,37 @@ export default function CommandeDetails({ commandeId, onClose, onEdit }: Command
         </div>
 
         {/* Informations client */}
-        <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="font-semibold text-lg mb-3">Informations client</h3>
+        <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+          <h3 className="font-semibold text-base sm:text-lg mb-2 sm:mb-3">Informations client</h3>
           {client ? (
             <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Nom:</span>
-                <span className="font-medium">{client.nom} {client.prenom}</span>
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                <span className="text-gray-600 text-sm font-medium">Nom:</span>
+                <span className="font-medium text-sm">{client.nom} {client.prenom}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Email:</span>
-                <span className="font-medium">{client.email}</span>
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                <span className="text-gray-600 text-sm font-medium">Email:</span>
+                <span className="font-medium text-sm break-all">{client.email}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Téléphone:</span>
-                <span className="font-medium">{client.telephone || '-'}</span>
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                <span className="text-gray-600 text-sm font-medium">Téléphone:</span>
+                <span className="font-medium text-sm">{client.telephone || '-'}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Adresse:</span>
-                <span className="font-medium">{client.adresse || '-'}</span>
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                <span className="text-gray-600 text-sm font-medium">Adresse:</span>
+                <span className="font-medium text-sm">{client.adresse || '-'}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Code postal:</span>
-                <span className="font-medium">{client.code_postal || '-'}</span>
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                <span className="text-gray-600 text-sm font-medium">Code postal:</span>
+                <span className="font-medium text-sm">{client.code_postal || '-'}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Ville:</span>
-                <span className="font-medium">{client.ville || '-'}</span>
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                <span className="text-gray-600 text-sm font-medium">Ville:</span>
+                <span className="font-medium text-sm">{client.ville || '-'}</span>
               </div>
             </div>
           ) : (
-            <p className="text-gray-500">Informations client non disponibles</p>
+            <p className="text-gray-500 text-sm">Informations client non disponibles</p>
           )}
         </div>
       </div>

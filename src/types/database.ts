@@ -170,3 +170,98 @@ export type NouvelEvenement = Omit<Evenement, 'id' | 'rappel_envoye'>;
 
 // Type pour les données de base d'une nouvelle communication (lors de la création)
 export type NouvelleCommunication = Omit<Communication, 'id' | 'date_envoi'>;
+
+// Types pour la gestion des stocks
+export type TypeFrigo = 
+  | 'Frigo 1'
+  | 'Frigo 2'
+  | 'Frigo 3';
+
+export type ElementStock = {
+  id: string; // UUID
+  nom: string;
+  quantite: number;
+  unite: string; // g, kg, l, ml, pièce, etc.
+  frigo: TypeFrigo;
+  prix_par_part: number | null; // Prix par part en euros
+  date_peremption: string | null; // Format ISO date "YYYY-MM-DD"
+  date_ajout: string; // Format ISO datetime
+  date_modification: string; // Format ISO datetime
+  notes: string | null;
+  alerte_stock_bas: number | null; // Seuil d'alerte pour stock bas
+};
+
+// Type pour les données de base d'un nouvel élément de stock (lors de la création)
+export type NouvelElementStock = Omit<ElementStock, 
+  'id' | 
+  'date_ajout' | 
+  'date_modification'
+>;
+
+// Types pour la gestion des marchés
+export type StatutMarche = 
+  | 'à venir'
+  | 'en cours'
+  | 'terminé'
+  | 'annulé';
+
+export type Marche = {
+  id: string; // UUID
+  nom: string;
+  lieu: string;
+  date_debut: string; // Format ISO datetime
+  date_fin: string; // Format ISO datetime
+  statut: StatutMarche;
+  notes: string | null;
+  produits_vendus: string | null; // Liste des produits vendus au format JSON
+  chiffre_affaire: number | null; // Chiffre d'affaires réalisé
+  date_creation: string; // Format ISO datetime
+  date_modification: string; // Format ISO datetime
+};
+
+// Type pour les données de base d'un nouveau marché (lors de la création)
+export type NouveauMarche = Omit<Marche, 
+  'id' | 
+  'statut' | 
+  'chiffre_affaire' | 
+  'date_creation' | 
+  'date_modification'
+>;
+
+// Type pour les ventes sur les marchés
+export type VenteMarche = {
+  id: string; // UUID
+  id_marche: string; // UUID
+  date_vente: string; // Format ISO datetime
+  montant_total: number;
+  notes: string | null;
+  status: 'déclarée' | 'non_déclarée';
+  date_creation: string; // Format ISO datetime
+  date_modification: string; // Format ISO datetime
+};
+
+// Type pour les variantes de produits vendus sur les marchés
+export type VarianteMarche = {
+  id: string; // UUID
+  id_vente_marche: string; // UUID
+  id_stock: string | null; // UUID
+  nom_produit: string;
+  quantite: number;
+  prix_unitaire: number;
+  montant_total: number;
+  date_creation: string; // Format ISO datetime
+  date_modification: string; // Format ISO datetime
+};
+
+// Types pour la création
+export type NouvelleVenteMarche = Omit<VenteMarche,
+  'id' |
+  'date_creation' |
+  'date_modification'
+>;
+
+export type NouvelleVarianteMarche = Omit<VarianteMarche,
+  'id' |
+  'date_creation' |
+  'date_modification'
+>;
