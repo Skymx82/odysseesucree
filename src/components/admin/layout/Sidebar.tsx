@@ -51,12 +51,11 @@ export default function Sidebar() {
               <li key={item.path} className="flex-1">
                 <Link 
                   href={item.path}
-                  className={`flex flex-col items-center justify-center py-3 ${pathname === item.path ? 'text-[#A90BD9]' : 'text-gray-600'}`}
+                  className={`flex items-center justify-center py-3 ${pathname === item.path ? 'text-[#A90BD9]' : 'text-gray-600'}`}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                     <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
                   </svg>
-                  <span className="text-xs mt-1">{item.name}</span>
                 </Link>
               </li>
             ))}
