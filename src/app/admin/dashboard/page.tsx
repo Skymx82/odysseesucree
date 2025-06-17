@@ -91,7 +91,7 @@ export default function Dashboard() {
       </div>
 
       {/* Guide d'utilisation */}
-      <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm mb-6">
+      <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm mb-6 text-black">
         <h2 className="text-xl font-medium mb-4">Guide d'utilisation de l'administration</h2>
         
         <div className="space-y-6">
