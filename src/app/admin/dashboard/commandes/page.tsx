@@ -48,9 +48,18 @@ export default function CommandesPage() {
       }
       const data = await response.json();
       
-      // Tri des commandes par date de commande (plus récentes d'abord)
+      // Tri des commandes par proximité de date avec aujourd'hui
+      const today = new Date();
       const sortedData = [...data].sort((a, b) => {
-        return new Date(b.date_commande).getTime() - new Date(a.date_commande).getTime();
+        const dateA = new Date(a.date_commande);
+        const dateB = new Date(b.date_commande);
+        
+        // Calculer la différence absolue en millisecondes entre chaque date et aujourd'hui
+        const diffA = Math.abs(dateA.getTime() - today.getTime());
+        const diffB = Math.abs(dateB.getTime() - today.getTime());
+        
+        // Trier par proximité (la plus petite différence en premier)
+        return diffA - diffB;
       });
       
       setCommandes(sortedData);
