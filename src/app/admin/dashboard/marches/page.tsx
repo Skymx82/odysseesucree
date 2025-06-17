@@ -32,12 +32,25 @@ export default function MarchesPage() {
       setLoading(true);
       const { data, error } = await supabase
         .from('marches')
-        .select('*')
-        .order('date_debut', { ascending: false });
+        .select('*');
       
       if (error) throw error;
       
-      setMarches(data || []);
+      // Trier les marchés par proximité de date avec aujourd'hui
+      const today = new Date();
+      const sortedData = (data || []).sort((a, b) => {
+        const dateA = new Date(a.date_debut);
+        const dateB = new Date(b.date_debut);
+        
+        // Calculer la différence absolue en millisecondes entre chaque date et aujourd'hui
+        const diffA = Math.abs(dateA.getTime() - today.getTime());
+        const diffB = Math.abs(dateB.getTime() - today.getTime());
+        
+        // Trier par proximité (la plus petite différence en premier)
+        return diffA - diffB;
+      });
+      
+      setMarches(sortedData);
     } catch (err: any) {
       console.error('Erreur lors du chargement des marchés:', err);
       setError(err.message || 'Une erreur est survenue lors du chargement des données');
