@@ -2,33 +2,61 @@
 
 import DashboardLayout from "@/components/admin/layout/DashboardLayout";
 import { Poppins } from 'next/font/google';
+import { useState, useEffect } from 'react';
+import { supabase } from '@/utils/supabase';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['300', '400', '500', '600'] });
 
 export default function Dashboard() {
+  const [totalCommandes, setTotalCommandes] = useState<number>(0);
+  const [totalRevenus, setTotalRevenus] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        // Récupérer le nombre total de commandes
+        const { count: commandesCount, error: commandesError } = await supabase
+          .from('commandes')
+          .select('id', { count: 'exact', head: true });
+
+        if (commandesError) throw commandesError;
+
+        // Récupérer le total des revenus (commandes + marchés)
+        const { data: commandes, error: revenusError } = await supabase
+          .from('commandes')
+          .select('montant_total');
+
+        if (revenusError) throw revenusError;
+
+        const { data: ventesMarche, error: ventesError } = await supabase
+          .from('vente_marche')
+          .select('montant_total');
+
+        if (ventesError) throw ventesError;
+
+        // Calculer le total des revenus
+        const revenusCommandes = commandes?.reduce((sum, cmd) => sum + parseFloat(cmd.montant_total.toString()), 0) || 0;
+        const revenusMarches = ventesMarche?.reduce((sum, vente) => sum + parseFloat(vente.montant_total.toString()), 0) || 0;
+        
+        setTotalCommandes(commandesCount || 0);
+        setTotalRevenus(revenusCommandes + revenusMarches);
+      } catch (error) {
+        console.error('Erreur lors du chargement des statistiques:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchStats();
+  }, []);
+
   return (
     <DashboardLayout>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6 text-black">
-        {/* Statistiques rapides */}
-        <div className="bg-white p-6 rounded-lg shadow-sm">
-          <div className="flex items-center justify-between">
-            <h3 className="text-gray-500 text-sm font-medium">Clients</h3>
-            <div className="bg-blue-100 p-2 rounded-full">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-blue-600">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
-              </svg>
-            </div>
-          </div>
-          <p className="text-2xl font-semibold mt-2">42</p>
-          <p className="text-green-600 text-xs mt-1 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3 h-3 mr-1">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
-            </svg>
-            +12% ce mois
-          </p>
-        </div>
-
-        <div className="bg-white p-6 rounded-lg shadow-sm">
+      {/* Statistiques principales - optimisées pour mobile */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6 text-black">
+        {/* Commandes */}
+        <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
           <div className="flex items-center justify-between">
             <h3 className="text-gray-500 text-sm font-medium">Commandes</h3>
             <div className="bg-purple-100 p-2 rounded-full">
@@ -37,16 +65,15 @@ export default function Dashboard() {
               </svg>
             </div>
           </div>
-          <p className="text-2xl font-semibold mt-2">18</p>
-          <p className="text-green-600 text-xs mt-1 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3 h-3 mr-1">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
-            </svg>
-            +5% cette semaine
-          </p>
+          {loading ? (
+            <div className="animate-pulse h-8 bg-gray-200 rounded mt-2"></div>
+          ) : (
+            <p className="text-2xl font-semibold mt-2">{totalCommandes}</p>
+          )}
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm">
+        {/* Revenus */}
+        <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
           <div className="flex items-center justify-between">
             <h3 className="text-gray-500 text-sm font-medium">Revenus</h3>
             <div className="bg-green-100 p-2 rounded-full">
@@ -55,41 +82,70 @@ export default function Dashboard() {
               </svg>
             </div>
           </div>
-          <p className="text-2xl font-semibold mt-2">1 280 €</p>
-          <p className="text-green-600 text-xs mt-1 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3 h-3 mr-1">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
-            </svg>
-            +8% ce mois
-          </p>
-        </div>
-
-        <div className="bg-white p-6 rounded-lg shadow-sm">
-          <div className="flex items-center justify-between">
-            <h3 className="text-gray-500 text-sm font-medium">Produits</h3>
-            <div className="bg-orange-100 p-2 rounded-full">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-orange-600">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
-              </svg>
-            </div>
-          </div>
-          <p className="text-2xl font-semibold mt-2">24</p>
-          <p className="text-red-600 text-xs mt-1 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3 h-3 mr-1">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
-            </svg>
-            -2% ce mois
-          </p>
+          {loading ? (
+            <div className="animate-pulse h-8 bg-gray-200 rounded mt-2"></div>
+          ) : (
+            <p className="text-2xl font-semibold mt-2">{totalRevenus.toFixed(2)} €</p>
+          )}
         </div>
       </div>
 
-      {/* Message de bienvenue */}
-      <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
-        <h2 className="text-xl font-medium mb-4">Bienvenue dans votre tableau de bord</h2>
-        <p className="text-gray-600">
-          Ce tableau de bord vous permet de gérer votre entreprise Odyssée Sucrée. 
-          Utilisez le menu latéral pour accéder aux différentes sections.
-        </p>
+      {/* Guide d'utilisation */}
+      <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm mb-6">
+        <h2 className="text-xl font-medium mb-4">Guide d'utilisation de l'administration</h2>
+        
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-lg font-medium text-[#A90BD9] mb-2">Bienvenue dans votre tableau de bord Odyssée Sucrée</h3>
+            <p className="text-gray-600 mb-3">
+              Cette interface vous permet de gérer l'ensemble de votre activité. Voici comment naviguer et utiliser les différentes fonctionnalités :
+            </p>
+          </div>
+          
+          <div className="space-y-4">
+            <div className="border-l-4 border-[#A90BD9] pl-4">
+              <h4 className="font-medium">Gestion des clients</h4>
+              <p className="text-gray-600 text-sm">
+                Dans la section <strong>Clients</strong>, vous pouvez consulter votre fichier client, ajouter de nouveaux clients, 
+                modifier leurs informations et suivre leur historique d'achat. Un outil précieux pour fidéliser votre clientèle.
+              </p>
+            </div>
+            
+            <div className="border-l-4 border-[#A90BD9] pl-4">
+              <h4 className="font-medium">Gestion des marchés</h4>
+              <p className="text-gray-600 text-sm">
+                La section <strong>Marchés</strong> vous permet de planifier vos événements, enregistrer vos ventes en temps réel 
+                grâce au TPE intégré, et consulter les statistiques détaillées de chaque marché (produits vendus, chiffre d'affaires, etc.).
+              </p>
+            </div>
+            
+            <div className="border-l-4 border-[#A90BD9] pl-4">
+              <h4 className="font-medium">Gestion des stocks</h4>
+              <p className="text-gray-600 text-sm">
+                Suivez votre inventaire dans la section <strong>Stocks</strong>. Vous pouvez ajouter de nouveaux produits, 
+                mettre à jour les quantités et recevoir des alertes lorsque les stocks sont bas.
+              </p>
+            </div>
+            
+            <div className="border-l-4 border-[#A90BD9] pl-4">
+              <h4 className="font-medium">Commandes et événements</h4>
+              <p className="text-gray-600 text-sm">
+                Gérez vos commandes clients et événements à venir dans les sections dédiées. Vous pouvez suivre l'état des commandes, 
+                enregistrer les paiements et planifier vos productions.
+              </p>
+            </div>
+          </div>
+          
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <h4 className="font-medium mb-2">Conseils d'utilisation</h4>
+            <ul className="list-disc list-inside space-y-1 text-sm text-gray-600">
+              <li>Sur mobile, utilisez le menu en haut à gauche pour naviguer entre les sections</li>
+              <li>Consultez régulièrement vos statistiques pour suivre l'évolution de votre activité</li>
+              <li>Mettez à jour vos stocks après chaque marché ou production</li>
+              <li>Utilisez les filtres dans chaque section pour retrouver rapidement l'information recherchée</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </DashboardLayout>
   );
