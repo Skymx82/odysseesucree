@@ -251,9 +251,6 @@ export default function StockPage() {
                       >
                         <div className="flex-1">
                           <p className="font-medium text-gray-800">{item.nom}</p>
-                          {item.prix_par_part !== null && item.prix_par_part !== undefined && (
-                            <p className="text-xs text-gray-500">Prix par part: {item.prix_par_part.toFixed(2)}€</p>
-                          )}
                         </div>
                         
                         {/* Contrôles de quantité - Optimisés pour mobile */}
