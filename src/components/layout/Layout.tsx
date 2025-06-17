@@ -58,7 +58,9 @@ export default function Layout({ children }: LayoutProps) {
               className="object-contain"
             />
           </div>
-          <h1 className={`${caveat.className} text-[#A90BD9] text-2xl`}>Odyssée Sucrée</h1>
+          <div onClick={handleLogoClick}>
+            <h1 className={`${caveat.className} text-[#A90BD9] text-2xl`}>Odyssée Sucrée</h1>
+          </div>
         </div>
         <nav className={`${poppins.className} hidden md:flex space-x-6 text-xs text-gray-700`}>
           <Link href="/" className="hover:text-[#D90BB5] transition-colors">Accueil</Link>
@@ -123,6 +125,19 @@ export default function Layout({ children }: LayoutProps) {
             >
               À propos
             </Link>
+            
+            {/* Bouton d'accès admin caché en bas du menu mobile */}
+            <div className="mt-6 pt-6 border-t border-gray-100">
+              <button 
+                onClick={() => {
+                  router.push('/admin/login');
+                  toggleMobileMenu();
+                }}
+                className="text-xs text-gray-400 hover:text-[#D90BB5] transition-colors py-2"
+              >
+                Accès Administration
+              </button>
+            </div>
           </nav>
         </div>
       </header>
